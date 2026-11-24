@@ -1,7 +1,7 @@
 # Gradient — M3 Animation Video
 
 **Student:** Kaustubh Kashyap (E25B070877)  
-**Format:** 16:9, 1920x1080, 60 fps, approximately five minutes  
+**Format:** 16:9, 1920x1080, 60 fps, approximately 4:05
 **Software:** Manim Community Edition 0.19.0
 
 This explainer introduces the gradient, directional derivatives, and level curves. Its editorial visual style uses warm paper, near-black typography, vermilion gradient arrows, blue direction arrows, and charcoal contours. A warm, confident adult female system voice narrates the lesson. Voice-over is synthesized locally; the narration is not uploaded. No background music is used.
@@ -15,7 +15,7 @@ M3_AnimationVideo_Gradient_E25B070877/
 │   ├── scenes.py              # one Scene class for each storyboard scene
 │   ├── helpers.py             # shared colors and layout helpers
 │   ├── manim.cfg              # 1920x1080 render settings
-│   ├── requirements.txt       # Manim CE and neural TTS dependencies
+│   ├── requirements.txt       # Manim CE requirements
 │   ├── voiceover.py           # creates and times female voice-over
 │   └── render_all.sh          # renders and assembles the final MP4
 ├── Storyboard.pdf
@@ -37,7 +37,7 @@ python -m pip install -r requirements.txt
 bash render_all.sh
 ```
 
-The script uses macOS Samantha, fits each narration passage to its scene duration, renders each scene at high quality, and combines the animation and voice into `E25B070877_Video.mp4` in the project root. You can replace the voice in `Code/voiceover.py`.
+The script uses macOS Samantha at its generated speed, renders each scene to match its spoken passage, then combines animation and narration into `E25B070877_Video.mp4` in the project root. Speech is never time-stretched. You can replace the voice in `Code/voiceover.py`.
 
 ## Fast preview
 
@@ -70,7 +70,7 @@ Upload or clone this project, change to its `Code` directory, and run `!manim -p
 
 ## Voice-over and timing
 
-`Narration.md` contains approximately 685 spoken words and action cues. The seven scenes are held to the storyboard timings of 8, 32, 45, 60, 85, 35, and 35 seconds (300 seconds total). `voiceover.py` synthesizes each passage separately with the operating system's local female voice and adjusts pacing slightly to fit the corresponding scene. For a personal recording, replace the generated audio files with your recordings, then use FFmpeg to fit each clip to the same scene durations. Keep any music low and add its track and artist credit to the final frame.
+`Narration.md` contains approximately 685 spoken words and action cues. `voiceover.py` synthesizes each passage separately with the operating system's local female voice, adds a short breath between passages, and writes natural scene lengths to `Code/audio/scene_durations.json`. The video follows those lengths, so speech is not stretched or rushed to fit a fixed five-minute template. For a personal recording, replace the generated audio files and update the durations before rendering.
 
 ## Before submission
 

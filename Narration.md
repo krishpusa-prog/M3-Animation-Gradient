@@ -1,27 +1,27 @@
 # Narration script
 
-Read in a warm, confident, playful adult female voice. Target: about five minutes. Bracketed directions are not spoken.
+Read in a warm, confident, playful adult female voice at natural speed. Target: about four minutes. Bracketed directions are not spoken.
 
-## OPENING FRAME (0:00-0:08)
+## OPENING FRAME (0:00-0:12)
 [Title and student details appear; brief pause.]
 Gradient: the direction of steepest increase. A visual guide for Linear Algebra and Calculus M3. I’m Kaustubh Kashyap, student ID E25B070877.
 
-## SCENE 1 — HOOK / CONTEXT (0:08-0:40)
+## SCENE 1 — HOOK / CONTEXT (0:12-0:32)
 [Reveal contour map and point P.]
 Imagine you’re on a hillside in thick fog. You can feel the ground but can’t see the landscape. You want to climb quickly. Which way should you go? We represent height with a function of horizontal position. Each contour line connects places at the same height, and P marks your position. We want one arrow showing the fastest uphill direction and its rate.
 
-## SCENE 2 — CONCEPT INTRODUCTION (0:40-1:25)
+## SCENE 2 — CONCEPT INTRODUCTION (0:32-1:03)
 [Reveal each symbol as it is named; show the learning objective.]
 Let x and y be horizontal coordinates, and let f be a differentiable function assigning a height to each location. So f of x comma y is height at that point. The partial derivative f sub x measures how height changes with x while y stays fixed. Similarly, f sub y measures change with y while x stays fixed. The symbol nabla, an upside-down triangle, collects these partial derivatives into the gradient. Its components are f sub x and f sub y. It points toward fastest local increase, and its length is that rate.
 [Learning objective on screen: explain the gradient, compute it from partial derivatives, and justify why it points in the direction of steepest increase.]
 
-## SCENE 3 — VISUAL INTUITION (1:25-2:25)
+## SCENE 3 — VISUAL INTUITION (1:03-1:44)
 [Show contour map; rotate the blue unit vector u around P.]
 A level curve joins points where f has one constant value: on a hill, it is a line of constant elevation. Choose a direction u at P. It is a unit vector, with length one, so we compare rates per equal distance. The directional derivative, D sub u f, is the instantaneous rate of change as we move from P in direction u.
 [Display the dot product formula and compare the arrows.]
 This rate equals the dot product of the gradient at P with u. If theta is the angle between them, it equals the gradient’s length times cosine theta. Cosine is greatest, one, when theta is zero. So the rate is greatest when u points along the gradient. Along a level curve, height stays constant and the rate is zero. The gradient is therefore perpendicular to the curve.
 
-## SCENE 4 — WORKED EXAMPLE (2:25-3:50)
+## SCENE 4 — WORKED EXAMPLE (1:44-3:02)
 [Show each calculation in sequence.]
 Take f of x comma y equal to x squared plus two y squared, at P equal to (1,1). The partial derivatives are two x and four y. At P, the gradient is (2,4). Its magnitude is square root of two squared plus four squared: square root of twenty, or two square root five, approximately 4.47.
 [Show the four unit directions beside their dot products.]
@@ -29,11 +29,11 @@ Compare four unit directions. For (1,0), the dot product is 2; for (0,1), it is 
 [Highlight the contour and its tangent.]
 The height at P is 3, so the level curve is x squared plus two y squared equals 3. Implicit differentiation gives two x plus four y times y-prime equals zero. Thus y-prime is negative x over two y; at P, the slope is negative one-half. A tangent direction is (2, negative 1). Its dot product with the gradient is two times two plus four times negative one, which equals zero. The gradient is perpendicular to the level curve.
 
-## SCENE 5 — INTERPRETATION (3:50-4:25)
+## SCENE 5 — INTERPRETATION (3:02-3:29)
 [Return to the hillside; label increase, decrease, and level directions.]
 At a differentiable point, the rate is gradient length times cosine theta. Its maximum occurs at theta zero, along the gradient. The opposite direction, negative gradient, gives steepest decrease. Along a level curve the rate is zero. These ideas appear in terrain analysis, heat flow, and gradient descent, where we move against the gradient to reduce a function. If f is not differentiable, a gradient may not exist and this formula may fail.
 
-## SCENE 6 — SUMMARY & CREDITS (4:25-5:00)
+## SCENE 6 — SUMMARY & CREDITS (3:29-4:04)
 [Three takeaways, then credits. Hold final frame.]
 Three takeaways. First, collect the partial derivatives to compute the gradient. Second, its direction gives steepest increase, and its length gives the maximum rate. Third, it is perpendicular to a level curve because the function value stays constant along that curve.
 Reference: OpenStax, Calculus Volume 3, Section 4.6, “Directional Derivatives and the Gradient.” Music: no background music. AI assistance from Claude by Anthropic was used for scripting, code drafting, and storyboard; I verified the mathematics and can explain the code.

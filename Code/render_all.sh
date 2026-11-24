@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Render all seven timed scenes, generate narration, and combine into one 5:00 MP4.
+# Render all seven audio-timed scenes and combine them with natural-speed narration.
 set -euo pipefail
 cd "$(dirname "$0")"
 if [[ -x ".venv/bin/manim" ]]; then
@@ -15,7 +15,7 @@ fi
 
 videos=()
 for scene in "${scenes[@]}"; do
-  manim -qh scenes.py "$scene"
+  manim -qh --disable_caching scenes.py "$scene"
   video="media/videos/scenes/1080p60/${scene}.mp4"
   [[ -n "$video" ]] || { echo "Could not find render for $scene" >&2; exit 1; }
   videos+=("$video")
