@@ -2,6 +2,10 @@
 
 **Learning objective:** Explain the gradient vector of a two-variable function, compute it from partial derivatives, and justify why it points in the direction of steepest increase.
 
+**Visual direction:** Editorial, high-contrast layouts inspired by the supplied references: warm paper `#F4F1EA`, near-black `#171719`, vermilion `#EF3F35`, and a restrained blue `#2389B8`. Vermilion always marks the gradient; blue marks the test direction; charcoal contours mark constant function values. Use bold type, grid-like spacing, crisp rules, and kinetic arrow/contour movement.
+
+**Closing reference:** OpenStax, *Calculus Volume 3*, Section 4.6, “Directional Derivatives and the Gradient.”
+
 | Scene | Purpose | Visual plan | Narration summary | Math shown | Duration |
 |---|---|---|---|---|---|
 | Opening frame | Identify the project and student. | Title card; abstract contour rings; student details. | “Gradient: the direction of steepest increase.” | No new mathematics. | 0:08 |

@@ -1,0 +1,6 @@
+# Local Python environment and Manim render cache
+Code/.venv/
+Code/media/
+Code/audio/
+__pycache__/
+*.py[cod]
