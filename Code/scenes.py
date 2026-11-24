@@ -31,26 +31,6 @@ def finish_scene(scene, fallback):
         scene.wait(remaining)
 
 
-def reveal_equation_beats(scene, entries, duration):
-    """Replace one bold equation card at a time, paced to the spoken example."""
-    weights = [entry[2] for entry in entries]
-    total_weight = sum(weights)
-    old = None
-    used = scene.time
-    for text, color, weight in entries:
-        beat = duration * weight / total_weight
-        card = Text(text, font_size=36, weight=MEDIUM, color=color, line_spacing=.9)
-        card.move_to(RIGHT * 2.15 + DOWN * .2)
-        if old is None:
-            scene.play(FadeIn(card, shift=RIGHT*.45), run_time=.55)
-        else:
-            scene.play(ReplacementTransform(old, card), run_time=.55)
-        hold = max(.12, beat - .55)
-        scene.wait(hold)
-        used += beat
-        old = card
-
-
 class Scene0Opening(Scene):
     def construct(self):
         self.camera.background_color = BG
@@ -214,27 +194,70 @@ class Scene3Intuition(Scene):
         finish_scene(self, 41)
 
 
-class Scene4Example(Scene):
+class Scene4Example(ThreeDScene):
     def construct(self):
         self.camera.background_color = BG
-        self.add(title("Worked example at P = (1, 1)"))
-        # A live contour diagram stays on screen while the calculation unfolds.
-        axes = Axes(x_range=[-1.8, 1.8, 1], y_range=[-1.55, 1.55, 1],
-                    x_length=4.35, y_length=3.75,
-                    axis_config={"color": MUTED, "stroke_width": 2},
-                    tips=True).shift(LEFT*3.55+DOWN*.35)
-        contour = Ellipse(width=4.18, height=2.95, color=CONTOUR, stroke_width=3)
-        contour.move_to(axes.c2p(0, 0))
-        point = Dot(axes.c2p(1, 1), color=INK, radius=.09)
-        p_label = Text("P", font_size=21, weight=BOLD).next_to(point, UR, buff=.08)
-        grad_arrow = Arrow(axes.c2p(1,1), axes.c2p(1.35,1.7), buff=0, color=GRADIENT, stroke_width=7)
-        tangent = Arrow(axes.c2p(.66,1.17), axes.c2p(1.34,.83), buff=0, color=DIRECTION, stroke_width=5)
-        contour_label = Text("f = 3", color=CONTOUR, font_size=19).next_to(contour, DOWN, buff=.1)
-        self.play(Create(axes), run_time=.65)
-        self.play(Create(contour), FadeIn(point, p_label), run_time=.8)
-        self.play(GrowArrow(grad_arrow), run_time=.55)
+        self.set_camera_orientation(phi=68*DEGREES, theta=-52*DEGREES, zoom=1.15)
+        heading = title("Worked example at P = (1, 1)")
+        self.add_fixed_in_frame_mobjects(heading)
 
-        duration = max(8, scene_seconds(self, 78) - self.time - .8)
+        # The central object is the actual height surface z = x^2 + 2y^2.
+        axes = ThreeDAxes(
+            x_range=[-2, 2, 1], y_range=[-2, 2, 1], z_range=[0, 13, 3],
+            x_length=4.8, y_length=4.8, z_length=3.4,
+            axis_config={"color": MUTED, "stroke_width": 1.6},
+            z_axis_config={"color": MUTED, "stroke_width": 1.6},
+        ).move_to(LEFT*3.25+DOWN*.3)
+        height = lambda x, y: x**2 + 2*y**2
+        surface = Surface(
+            lambda x, y: axes.c2p(x, y, height(x, y)),
+            u_range=[-1.75, 1.75], v_range=[-1.36, 1.36], resolution=(16, 14),
+            checkerboard_colors=[BLUE_E, TEAL_D], fill_opacity=.76,
+            stroke_color="#C8EDF0", stroke_width=.35,
+        )
+        # The ellipse is the level set f=3 lifted onto the surface.
+        contour = ParametricFunction(
+            lambda t: axes.c2p(np.sqrt(3)*np.cos(t), np.sqrt(1.5)*np.sin(t), 3),
+            t_range=[0, TAU], color=INK, stroke_width=4,
+        )
+        point = Dot3D(axes.c2p(1, 1, 3), color=INK, radius=.075)
+        drop = DashedLine(axes.c2p(1,1,0), axes.c2p(1,1,3), color=INK, dash_length=.09, stroke_width=2)
+        # Lift the unit gradient direction into the tangent plane at P.
+        ux, uy = 1/np.sqrt(5), 2/np.sqrt(5)
+        step = .52
+        ascent_path = ParametricFunction(
+            lambda t: axes.c2p(1+t*ux, 1+t*uy, height(1+t*ux, 1+t*uy)),
+            t_range=[0,step], color=GRADIENT, stroke_width=7,
+        )
+        ascent_path.set_z_index(6)
+        ascent_tip = Dot3D(axes.c2p(1+ux*step, 1+uy*step, height(1+ux*step,1+uy*step)),
+                           color=GRADIENT, radius=.065).set_z_index(7)
+        tangent = Arrow3D(
+            axes.c2p(.6,1.2,3), axes.c2p(1.4,.8,3),
+            color=DIRECTION, thickness=.045, height=.24, base_radius=.075, resolution=8,
+        )
+        tangent.set_z_index(7)
+        tangent_plane = Surface(
+            lambda x,y: axes.c2p(x,y,3+2*(x-1)+4*(y-1)),
+            u_range=[.77,1.25], v_range=[.78,1.18], resolution=(6,6),
+            fill_color=GRADIENT, fill_opacity=.38,
+            checkerboard_colors=False, stroke_color=GRADIENT, stroke_width=.45,
+        )
+        plane_label = Text("TANGENT PLANE", font_size=14, color=GRADIENT, weight=BOLD)
+        plane_label.to_corner(UL, buff=.4).shift(DOWN*.42)
+        legend = VGroup(
+            Text("RED  /  steepest ascent", font_size=16, color=GRADIENT, weight=BOLD),
+            Text("BLUE  /  level-curve tangent", font_size=16, color=DIRECTION, weight=BOLD),
+        ).arrange(DOWN, aligned_edge=LEFT, buff=.12).to_corner(DL, buff=.32)
+        self.add_fixed_in_frame_mobjects(plane_label, legend)
+
+        self.play(Create(axes), run_time=.8)
+        self.play(FadeIn(surface), run_time=1.6)
+        self.move_camera(phi=62*DEGREES, theta=18*DEGREES, run_time=1.6)
+        self.play(Create(contour), FadeIn(point), Create(drop), run_time=.9)
+        self.play(FadeIn(tangent_plane), Create(ascent_path), FadeIn(ascent_tip), run_time=.8)
+
+        duration = max(8, scene_seconds(self, 98) - self.time - 1.5)
         entries = [
             ("f(x,y) = x² + 2y²", INK, 1.0),
             ("fₓ = 2x\nfᵧ = 4y", INK, 1.0),
@@ -248,22 +271,26 @@ class Scene4Example(Scene):
             ("Tangent slope: y′ = −1/2", CONTOUR, .85),
             ("(2,4) · (2,−1) = 0", DIRECTION, .9),
         ]
-        # The card changes with each narrated step; the diagram builds toward
-        # the result instead of leaving a wall of equations parked on screen.
         weights = [entry[2] for entry in entries]
         old = None
-        for text, color, weight in entries:
+        for i, (text, color, weight) in enumerate(entries):
             beat = duration * weight / sum(weights)
-            card = Text(text, font_size=36, weight=MEDIUM, color=color, line_spacing=.95)
-            card.move_to(RIGHT*2.25+DOWN*.15)
-            if old is None:
-                self.play(FadeIn(card, shift=RIGHT*.35), run_time=.48)
-            else:
-                self.play(ReplacementTransform(old, card), run_time=.48)
-            self.wait(max(.12, beat-.48))
+            card = Text(text, font_size=34, weight=MEDIUM, color=color, line_spacing=.95)
+            card.move_to(RIGHT*4.2+DOWN*.15)
+            if old is not None:
+                self.play(FadeOut(old, shift=LEFT*.2), run_time=.24)
+                self.remove_fixed_in_frame_mobjects(old)
+                self.remove(old)
+            self.add_fixed_in_frame_mobjects(card)
+            self.play(FadeIn(card, shift=RIGHT*.35), run_time=.36)
             old = card
-        self.play(GrowArrow(tangent), FadeIn(contour_label), run_time=.55)
-        finish_scene(self, 79)
+            if i == 4:
+                self.move_camera(phi=68*DEGREES, theta=-75*DEGREES, run_time=1.6)
+                self.play(Create(tangent), run_time=.65)
+            if i == 8:
+                self.play(Indicate(contour, color=ACCENT, scale_factor=1.02), run_time=.7)
+            self.wait(max(.12, beat-.48))
+        finish_scene(self, 98)
 
 
 class Scene5Meaning(Scene):
@@ -325,13 +352,12 @@ class Scene6Credits(Scene):
         credits = VGroup(
             Text("Reference: OpenStax, Calculus Volume 3, Section 4.6: Directional Derivatives and the Gradient.",
                  font_size=15, color=MUTED),
-            Text("Music: none.", font_size=17, color=MUTED),
+            Text("Voice: Microsoft Edge TTS (Aria).  Music: none.", font_size=16, color=MUTED),
             Text("AI assistance (Claude by Anthropic): scripting, code drafting, storyboard. Mathematics verified by student.",
                  font_size=16, color=MUTED),
         ).arrange(DOWN, aligned_edge=LEFT, buff=.2).to_edge(DOWN, buff=.22)
         index = Text("06", font_size=21, color=GRADIENT, weight=BOLD).to_corner(UL, buff=.4)
         self.add(index)
-        start_time = self.time
         for j in range(0, len(takeaways), 2):
             kicker, message = takeaways[j:j+2]
             kicker.move_to(LEFT*2.25+UP*.72)

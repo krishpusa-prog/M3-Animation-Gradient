@@ -1,10 +1,10 @@
 # Gradient — M3 Animation Video
 
 **Student:** Kaustubh Kashyap (E25B070877)  
-**Format:** 16:9, 1920x1080, 60 fps, approximately 4:51
+**Format:** 16:9, 1920x1080, 60 fps, approximately 5:07
 **Software:** Manim Community Edition 0.19.0
 
-This explainer introduces the gradient, directional derivatives, and level curves. Its editorial visual style uses warm paper, near-black typography, vermilion gradient arrows, blue direction arrows, and charcoal contours. A warm, confident adult female system voice narrates the lesson. Voice-over is synthesized locally; the narration is not uploaded. No background music is used.
+This explainer introduces the gradient, directional derivatives, and level curves. Its editorial visual style uses warm paper, near-black typography, vermilion ascent arrows, blue contour-tangent arrows, and a moving 3D height surface. Microsoft Edge TTS voice `en-US-AriaNeural` narrates the lesson. The narration script is sent to Microsoft's online TTS service. No background music is used.
 
 ## Project layout
 
@@ -37,7 +37,7 @@ python -m pip install -r requirements.txt
 bash render_all.sh
 ```
 
-The script uses macOS Samantha at its generated speed, renders each scene to match its spoken passage, then combines animation and narration into `E25B070877_Video.mp4` in the project root. Speech is never time-stretched. You can replace the voice in `Code/voiceover.py`.
+The script uses Microsoft's Aria neural voice, renders each scene to match its spoken passage, then combines animation and narration into `E25B070877_Video.mp4` in the project root. Speech is never time-stretched. It needs an internet connection for voice synthesis. You can change the voice and rate in `Code/voiceover.py`.
 
 ## Fast preview
 
@@ -51,26 +51,25 @@ This renders only the worked example in low quality. For a preview with narratio
 
 ## Windows
 
-Install Python 3.9+, FFmpeg, MiKTeX, and a Manim-compatible Cairo/Pango setup (MSYS2 is one option). In PowerShell, create and activate `.venv`, then run `python -m pip install -r requirements.txt`. The script uses a locally installed female SAPI voice. Use Git Bash or WSL for `bash render_all.sh`. For a quick check, run `manim -pql scenes.py Scene4Example` from `Code`.
+Install Python 3.9+, FFmpeg, MiKTeX, and a Manim-compatible Cairo/Pango setup (MSYS2 is one option). In PowerShell, create and activate `.venv`, then run `python -m pip install -r requirements.txt`. Voice synthesis requires an internet connection. Use Git Bash or WSL for `bash render_all.sh`. For a quick check, run `manim -pql scenes.py Scene4Example` from `Code`.
 
 ## Linux
 
-Install FFmpeg, Cairo/Pango development packages, and `espeak-ng` with your distribution's package manager. The equations use Unicode text, so no TeX installation is needed. Create a virtual environment, activate it, install `requirements.txt`, and run `bash render_all.sh` from `Code`.
+Install FFmpeg and Cairo/Pango development packages with your distribution's package manager. The equations use Unicode text, so no TeX installation is needed. Create a virtual environment, activate it, install `requirements.txt`, and run `bash render_all.sh` from `Code`. Voice synthesis needs an internet connection.
 
 ## Google Colab
 
 ```python
 !apt-get update -qq
-!apt-get install -y ffmpeg libcairo2-dev libpango1.0-dev pkg-config espeak-ng
-!apt-get install -y espeak-ng
-!pip install manim==0.19.0
+!apt-get install -y ffmpeg libcairo2-dev libpango1.0-dev pkg-config
+!pip install manim==0.19.0 edge-tts==7.3.1
 ```
 
-Upload or clone this project, change to its `Code` directory, and run `!manim -pql scenes.py Scene4Example` for a preview or `!bash render_all.sh` for the full render. Linux uses local `espeak-ng` voice `en-us+f3`. Download the finished MP4 from the project root.
+Upload or clone this project, change to its `Code` directory, install `requirements.txt`, and run `!manim -pql scenes.py Scene4Example` for a preview or `!bash render_all.sh` for the full render. Microsoft voice synthesis requires an internet connection. Download the finished MP4 from the project root.
 
 ## Voice-over and timing
 
-`Narration.md` contains approximately 790 spoken words and action cues. `voiceover.py` synthesizes each passage separately with the operating system's local female voice, adds a short breath between passages, and writes natural scene lengths to `Code/audio/scene_durations.json`. The video follows those lengths, so speech is not stretched or rushed to fit a fixed five-minute template. For a personal recording, replace the generated audio files and update the durations before rendering.
+`Narration.md` contains approximately 790 spoken words and action cues. `voiceover.py` synthesizes each passage separately with Microsoft's `en-US-AriaNeural` voice at a slightly lively rate, adds a short breath between passages, and writes scene lengths to `Code/audio/scene_durations.json`. The video follows those lengths, so speech is not stretched to fit a fixed template. For a personal recording, replace the generated audio files and update the durations before rendering.
 
 ## Before submission
 
