@@ -94,9 +94,11 @@ class Scene1Hook(Scene):
         caption.to_edge(RIGHT).shift(LEFT*.3+UP*.6)
         prompt = Text("Find the fastest local climb.", font_size=22, color=MUTED)
         prompt.next_to(caption, DOWN, buff=.45).align_to(caption, RIGHT)
+        spacing_note = Text("CLOSE CONTOURS  /  STEEPER GROUND", font_size=16, color=GRADIENT, weight=BOLD)
+        spacing_note.next_to(prompt, DOWN, buff=.32).align_to(prompt, RIGHT)
         self.play(Create(axes), run_time=1)
         self.play(LaggedStart(*[Create(c) for c in contours], lag_ratio=.15), run_time=1.5)
-        self.play(FadeIn(point, label), FadeIn(caption), Write(prompt), run_time=1)
+        self.play(FadeIn(point, label), FadeIn(caption), Write(prompt), FadeIn(spacing_note), run_time=1)
         self.play(GrowArrow(uphill_halo), GrowArrow(uphill), run_time=1)
         self.play(Indicate(point, color=ACCENT, scale_factor=1.7), run_time=.45)
         # Let the eye travel uphill as the question is asked; a dotted trail
@@ -120,6 +122,7 @@ class Scene2Concept(Scene):
         intro = Text("Let x and y describe horizontal position; f gives height.", font_size=25).move_to(UP*1.45)
         fx = Text("fₓ = ∂f/∂x   (y held fixed)", font_size=29).move_to(UP*.62)
         fy = Text("fᵧ = ∂f/∂y   (x held fixed)", font_size=29).move_to(DOWN*.08)
+        component_note = Text("Each component is a signed slope along one axis.", font_size=21, color=DIRECTION).move_to(LEFT*3.65+DOWN*.5)
         nabla = Text("∇  NABLA", font_size=20, weight=BOLD, color=GRADIENT).move_to(LEFT*3.65+DOWN*1.15)
         vector = Text("∇f = (fₓ, fᵧ)", font_size=45, weight=BOLD, color=GRADIENT).move_to(RIGHT*.55+DOWN*1.18)
         expansion = Text("= (∂f/∂x, ∂f/∂y)", font_size=27, color=GRADIENT).next_to(vector, DOWN, buff=.2)
@@ -130,7 +133,8 @@ class Scene2Concept(Scene):
         self.wait(2.4)
         self.play(FadeIn(fy, shift=RIGHT*.2), run_time=.45)
         self.play(Indicate(fy, color=DIRECTION, scale_factor=1.045), run_time=.45)
-        self.wait(2.4)
+        self.play(FadeIn(component_note, shift=UP*.08), run_time=.45)
+        self.wait(2.8)
         self.play(FadeIn(nabla, shift=LEFT*.2), run_time=.45)
         self.wait(1)
         self.play(FadeIn(vector, shift=RIGHT*.25), run_time=.55)
@@ -138,6 +142,9 @@ class Scene2Concept(Scene):
         self.wait(2.8)
         self.play(FadeIn(expansion, shift=DOWN*.12), run_time=.45)
         self.wait(1.2)
+        zero_note = Text("∇f = 0  /  0 FIRST-ORDER RATE", font_size=18, color=DIRECTION, weight=BOLD)
+        zero_note.move_to(LEFT*3.25+DOWN*2.18)
+        self.play(FadeIn(zero_note, shift=RIGHT*.18), run_time=.45)
         objective = Text(
             "By the end of this video, the viewer will be able to explain what the gradient vector\n"
             "of a two-variable function is, compute it from partial derivatives, and justify why it\n"
@@ -201,7 +208,7 @@ class Scene3Intuition(Scene):
         self.play(theta_tracker.animate.set_value(0), run_time=2.0)
         self.play(Indicate(gradient, color=ACCENT), run_time=.8)
         # Keep exploring angles as the explanation compares alignment and rate.
-        for angle in (PI/3, PI/6, 0, PI/2, 0):
+        for angle in (PI/3, PI/6, 0, PI/2, PI, 0):
             self.play(theta_tracker.animate.set_value(angle), run_time=2.1)
             self.wait(1.1)
         finish_scene(self, 41)
@@ -235,6 +242,7 @@ class Scene4Example(Scene):
             ("|∇f| = √20\n= 2√5 ≈ 4.47", GRADIENT, 1.0),
             ("East  →  rate 2\nNorth → rate 4", DIRECTION, .7),
             ("NE  →  3√2 ≈ 4.24", DIRECTION, .85),
+            ("(1,2) is √5 units long.\nNormalize before comparing.", DIRECTION, .95),
             ("Along ∇f  →  2√5 ≈ 4.47", GRADIENT, .9),
             ("Level curve: x² + 2y² = 3", CONTOUR, 1.0),
             ("Tangent slope: y′ = −1/2", CONTOUR, .85),
@@ -269,8 +277,10 @@ class Scene5Meaning(Scene):
             Text("Tangent to a level curve: rate = 0", font_size=25, color=CONTOUR),
             Text("Assume f is differentiable at P.", font_size=23, color=MUTED),
         ).arrange(DOWN, aligned_edge=LEFT, buff=.4).next_to(main, DOWN, buff=.55)
-        real_world = Text("Used in terrain, heat flow, and gradient descent.",
-                          font_size=22).to_edge(DOWN, buff=.4)
+        real_world = VGroup(
+            Text("Terrain and heat flow.  Gradient descent:", font_size=19, color=MUTED),
+            Text("short steps opposite ∇f reduce a function.", font_size=20),
+        ).arrange(DOWN, aligned_edge=LEFT, buff=.12).to_edge(DOWN, buff=.28)
         self.play(Write(main), run_time=.8)
         self.wait(2)
         # A sweeping angle marker makes the cosine argument visible, not just stated.
@@ -284,7 +294,7 @@ class Scene5Meaning(Scene):
         arc = Arc(radius=.48, start_angle=0, angle=PI/2, arc_center=center, color=INK, stroke_width=2)
         theta_label = Text("θ", font_size=22).move_to(center+RIGHT*.54+UP*.34)
         readout = Text("ALONG ∇f  /  MAX", font_size=17, color=GRADIENT, weight=BOLD)
-        readout.move_to(center+LEFT*.05+DOWN*.48)
+        readout.move_to(center+LEFT*.25+DOWN*.48)
         self.play(GrowArrow(base), Create(arc), FadeIn(theta_label), GrowArrow(rotating), FadeIn(readout), run_time=.6)
         self.play(FadeIn(points[0], shift=RIGHT*.32), theta.animate.set_value(0), run_time=1.0, rate_func=smooth)
         self.wait(3.1)

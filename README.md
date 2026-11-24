@@ -1,7 +1,7 @@
 # Gradient — M3 Animation Video
 
 **Student:** Kaustubh Kashyap (E25B070877)  
-**Format:** 16:9, 1920x1080, 60 fps, approximately 4:05
+**Format:** 16:9, 1920x1080, 60 fps, approximately 4:51
 **Software:** Manim Community Edition 0.19.0
 
 This explainer introduces the gradient, directional derivatives, and level curves. Its editorial visual style uses warm paper, near-black typography, vermilion gradient arrows, blue direction arrows, and charcoal contours. A warm, confident adult female system voice narrates the lesson. Voice-over is synthesized locally; the narration is not uploaded. No background music is used.
@@ -70,7 +70,7 @@ Upload or clone this project, change to its `Code` directory, and run `!manim -p
 
 ## Voice-over and timing
 
-`Narration.md` contains approximately 685 spoken words and action cues. `voiceover.py` synthesizes each passage separately with the operating system's local female voice, adds a short breath between passages, and writes natural scene lengths to `Code/audio/scene_durations.json`. The video follows those lengths, so speech is not stretched or rushed to fit a fixed five-minute template. For a personal recording, replace the generated audio files and update the durations before rendering.
+`Narration.md` contains approximately 790 spoken words and action cues. `voiceover.py` synthesizes each passage separately with the operating system's local female voice, adds a short breath between passages, and writes natural scene lengths to `Code/audio/scene_durations.json`. The video follows those lengths, so speech is not stretched or rushed to fit a fixed five-minute template. For a personal recording, replace the generated audio files and update the durations before rendering.
 
 ## Before submission
 
